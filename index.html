@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>start.ng</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+      :root {
+        --bg: #f7f6f0;
+        --card: #fffffb;
+        --ink: #26261f;
+        --muted: #6b6b60;
+        --line: #e8e6da;
+        --lime: #d9fb6a;
+        --nav: #fffffb;
+      }
+      :root[data-theme="dark"] {
+        --bg: #17170f;
+        --card: #22221a;
+        --ink: #f3f2e8;
+        --muted: #a3a396;
+        --line: #33332a;
+        --nav: #1c1c14;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #17170f;
+          --card: #22221a;
+          --ink: #f3f2e8;
+          --muted: #a3a396;
+          --line: #33332a;
+          --nav: #1c1c14;
+        }
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        overflow-x: hidden;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      header {
+        background: var(--nav);
+        border-bottom: 1px solid var(--line);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+      .nav {
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 800;
+        font-size: 24px;
+        letter-spacing: -0.5px;
+      }
+      .logo i {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: var(--lime);
+        display: grid;
+        place-items: center;
+      }
+      .logo i:after {
+        content: "";
+        border-left: 11px solid #26261f;
+        border-top: 7px solid transparent;
+        border-bottom: 7px solid transparent;
+        margin-left: 3px;
+      }
+      .logo span {
+        color: var(--muted);
+      }
+      .links {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .links a:hover {
+        color: var(--ink);
+      }
+      .pill {
+        height: 34px;
+        min-width: 34px;
+        border-radius: 99px;
+        border: 1px solid var(--line);
+        background: var(--card);
+        display: grid;
+        place-items: center;
+        font:
+          600 13px ui-monospace,
+          Menlo,
+          monospace;
+        padding: 0 12px;
+        cursor: pointer;
+        color: var(--ink);
+      }
+      .avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 50% 35%,
+          #f0a07a 0 28%,
+          #c8412f 29% 62%,
+          #26261f 63%
+        );
+        border: 2px solid var(--ink);
+      }
+      .hero {
+        position: relative;
+        min-height: calc(100vh - 62px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px 300px 60px 24px;
+      }
+      .eyebrow {
+        font:
+          500 13px ui-monospace,
+          Menlo,
+          monospace;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 26px;
+      }
+      h1 {
+        font-weight: 900;
+        letter-spacing: -0.045em;
+        line-height: 0.95;
+        font-size: clamp(46px, 8.2vw, 112px);
+        max-width: 900px;
+        min-height: 2em;
+      }
+      h1 mark {
+        background: linear-gradient(transparent 62%, var(--lime) 62%);
+        color: inherit;
+        padding: 0 0.05em;
+      }
+      h1 small {
+        display: block;
+        font-size: 0.3em;
+        letter-spacing: -0.02em;
+        font-weight: 700;
+        margin-top: 0.5em;
+        color: var(--muted);
+      }
+      .caret {
+        display: inline-block;
+        width: 0.06em;
+        height: 0.85em;
+        background: var(--ink);
+        margin-left: 0.04em;
+        vertical-align: -0.08em;
+        animation: blink 1s steps(1) infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+      .reveal {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .sub {
+        margin-top: 30px;
+        color: var(--muted);
+        font-size: 19px;
+        line-height: 1.75;
+        max-width: 560px;
+      }
+      .sub code {
+        background: var(--lime);
+        color: #26261f;
+        padding: 2px 8px;
+        border-radius: 5px;
+        font-size: 0.9em;
+      }
+      .cta {
+        margin-top: 34px;
+        background: var(--ink);
+        color: var(--bg);
+        border: 0;
+        border-radius: 10px;
+        padding: 16px 28px;
+        font: 700 17px inherit;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .cta:hover {
+        transform: translateY(-2px);
+      }
+      /* typewriter */
+      .tw {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        width: 250px;
+        height: 300px;
+        margin-top: -150px;
+        pointer-events: none;
+      }
+      .tw svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+      }
+      /* sections */
+      main {
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 30px 20px 100px;
+      }
+      h2 {
+        font-size: 24px;
+        letter-spacing: -0.4px;
+        margin-bottom: 18px;
+      }
+      .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .cat {
+        height: 110px;
+        border-radius: 16px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        color: #fff;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 1.15;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+      .cat:hover {
+        transform: translateY(-3px);
+      }
+      .cat:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(transparent 35%, rgba(0, 0, 0, 0.55));
+      }
+      .cat b,
+      .cat em {
+        position: relative;
+      }
+      .cat em {
+        font:
+          600 11px ui-monospace,
+          Menlo,
+          monospace;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        opacity: 0.85;
+        margin-top: 5px;
+      }
+      .new {
+        margin-top: 34px;
+      }
+      .new p {
+        display: inline;
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 14px;
+        margin-left: 10px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+        margin-top: 18px;
+      }
+      .game {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 10px 10px 14px;
+      }
+      .thumb {
+        height: 92px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-weight: 800;
+        font-size: 44px;
+        margin-bottom: 12px;
+      }
+      .game b {
+        display: block;
+        font-size: 17px;
+      }
+      .game span {
+        font:
+          13px ui-monospace,
+          Menlo,
+          monospace;
+        color: var(--muted);
+      }
+      .help {
+        position: fixed;
+        left: 20px;
+        bottom: 20px;
+        z-index: 30;
+        background: #26261f;
+        color: #fff;
+        border: 0;
+        border-radius: 99px;
+        padding: 10px 18px 10px 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font: 700 16px inherit;
+        font-family: inherit;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+        cursor: pointer;
+      }
+      .help i {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--lime);
+        color: #26261f;
+        display: grid;
+        place-items: center;
+        font-style: normal;
+      }
+      .top {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 30;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: #26261f;
+        color: #fff;
+        border: 0;
+        font-size: 22px;
+        cursor: pointer;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      }
+      :focus-visible {
+        outline: 3px solid #7aa800;
+        outline-offset: 2px;
+      }
+      @media (max-width: 1000px) {
+        .hero {
+          padding-right: 200px;
+        }
+        .tw {
+          transform: scale(0.72);
+          transform-origin: right center;
+        }
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .row {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 700px) {
+        .hero {
+          padding: 40px 20px 60px;
+        }
+        .tw {
+          display: none;
+        }
+        .links a {
+          display: none;
+        }
+        .sub {
+          font-size: 16px;
+        }
+        .row {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        h1 {
+          min-height: 0;
+        }
+      }
+      @media (max-width: 420px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav">
+        <a class="logo" href="#"><i></i>start<span>.ng</span></a>
+        <nav class="links">
+          <a href="#">Games</a><a href="#">Tournament</a><a href="#">Creators</a
+          ><a href="#">Docs</a>
+          <button class="pill" id="theme" aria-label="Toggle dark mode">
+            &#9790;
+          </button>
+          <span class="pill" title="Coins">&#9679;&nbsp;0</span>
+          <span class="avatar" role="img" aria-label="Your avatar"></span>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero" id="hero">
+      <p class="eyebrow">Big imagination. Played everywhere.</p>
+      <h1 id="h1" aria-label="Good vibes. Good games.">
+        <span id="txt"></span><span class="caret" id="caret"></span>
+      </h1>
+      <p class="sub reveal">
+        Games made by builders in the community.<br />Each one lives at its own
+        address, like <code>ghost-on-the-loose.start.ng</code>.<br />Pick one
+        and play right in your browser.
+      </p>
+      <button class="cta reveal">Play now</button>
+
+      <div class="tw" aria-hidden="true">
+        <svg viewBox="0 0 250 300">
+          <!-- stool -->
+          <g id="stool">
+            <path
+              d="M62 262 L44 300 M188 262 L206 300 M105 266 L98 300 M145 266 L152 300"
+              stroke="#7a4a26"
+              stroke-width="9"
+              stroke-linecap="round"
+            />
+            <ellipse cx="125" cy="258" rx="86" ry="14" fill="#a8693a" />
+            <ellipse cx="125" cy="254" rx="86" ry="13" fill="#c98547" />
+          </g>
+          <!-- paper (behind roller) -->
+          <g id="paper">
+            <rect
+              x="88"
+              y="62"
+              width="74"
+              height="72"
+              rx="3"
+              fill="#fffef6"
+              stroke="#d8d4c0"
+              stroke-width="2"
+            />
+            <path
+              d="M98 78h54M98 90h46M98 102h50"
+              stroke="#c9c5b0"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+          </g>
+          <!-- typewriter -->
+          <g id="machine">
+            <rect
+              x="50"
+              y="126"
+              width="150"
+              height="20"
+              rx="10"
+              fill="#2f6b4f"
+            />
+            <rect x="40" y="122" width="14" height="14" rx="7" fill="#1f4a37" />
+            <rect
+              x="196"
+              y="122"
+              width="14"
+              height="14"
+              rx="7"
+              fill="#1f4a37"
+            />
+            <path
+              d="M58 142 H192 L212 244 Q213 252 205 252 H45 Q37 252 38 244 Z"
+              fill="#4c9a73"
+            />
+            <path d="M58 142 H192 L196 164 H54 Z" fill="#3d8561" />
+            <rect
+              x="84"
+              y="150"
+              width="82"
+              height="8"
+              rx="4"
+              fill="#26261f"
+              opacity=".35"
+            />
+            <g id="keys" fill="#f3f2e8" stroke="#26261f" stroke-width="2"></g>
+            <rect
+              x="92"
+              y="228"
+              width="66"
+              height="10"
+              rx="5"
+              fill="#f3f2e8"
+              stroke="#26261f"
+              stroke-width="2"
+            />
+          </g>
+          <!-- hand -->
+          <g id="hand">
+            <g
+              transform="translate(122 232) rotate(-8)"
+              stroke="#7a4a2c"
+              stroke-width="2"
+              stroke-linejoin="round"
+            >
+              <rect
+                x="-27"
+                y="30"
+                width="54"
+                height="30"
+                rx="9"
+                fill="#3a5bd9"
+                stroke="#2a43a8"
+              />
+              <rect
+                x="-29"
+                y="24"
+                width="58"
+                height="12"
+                rx="6"
+                fill="#fffef6"
+                stroke="#cfcab5"
+              />
+              <rect
+                x="-37"
+                y="-4"
+                width="14"
+                height="30"
+                rx="7"
+                transform="rotate(-38 -30 20)"
+                fill="#f2b98a"
+              />
+              <path
+                d="M-25 28 Q-31 4 -27 -12 L27 -12 Q31 4 25 28 Z"
+                fill="#f2b98a"
+              />
+              <rect
+                x="-27"
+                y="-42"
+                width="13"
+                height="38"
+                rx="6.5"
+                fill="#f2b98a"
+              />
+              <rect
+                x="-13.5"
+                y="-48"
+                width="13"
+                height="44"
+                rx="6.5"
+                fill="#f2b98a"
+              />
+              <rect
+                x="0"
+                y="-45"
+                width="13"
+                height="41"
+                rx="6.5"
+                fill="#f2b98a"
+              />
+              <rect
+                x="13.5"
+                y="-38"
+                width="13"
+                height="34"
+                rx="6.5"
+                fill="#f2b98a"
+              />
+              <g fill="#ffe3cc" stroke="none">
+                <ellipse cx="-20.5" cy="-35" rx="3.5" ry="2.5" />
+                <ellipse cx="-7" cy="-41" rx="3.5" ry="2.5" />
+                <ellipse cx="6.5" cy="-38" rx="3.5" ry="2.5" />
+                <ellipse cx="20" cy="-31" rx="3.5" ry="2.5" />
+              </g>
+              <path
+                d="M-14 -4 V-12 M0 -4 V-12 M13 -4 V-12"
+                stroke-width="1.5"
+                fill="none"
+                opacity=".5"
+              />
+            </g>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <main>
+      <div class="head">
+        <h2>Pick a category</h2>
+        <a href="#">All categories &rarr;</a>
+      </div>
+      <div class="grid" id="cats"></div>
+      <div class="new">
+        <h2 style="display: inline">New this week</h2>
+        <p>Every new game shows here first</p>
+      </div>
+      <div class="row" id="games"></div>
+    </main>
+
+    <button class="help"><i>?</i>Help</button>
+    <button class="top" id="top" aria-label="Scroll to top">&uarr;</button>
+
+    <script>
+      // ---------- data-driven sections ----------
+      const cats = [
+        ["Endless runners", 38, "#c2410c,#1e293b"],
+        ["Nigerian themed", 43, "#b45309,#7c2d12"],
+        ["Brainy games", 25, "#0e7490,#1e1b4b"],
+        ["Space and sci-fi", 9, "#6d28d9,#0f172a"],
+        ["Racing and driving", 14, "#be123c,#1e293b"],
+        ["Catch and dodge", 29, "#0d9488,#ca8a04"],
+        ["Ancient ruins and treasure", 8, "#3f6212,#1c1917"],
+        ["With friends", 8, "#c026d3,#1e1b4b"],
+      ];
+      document.getElementById("cats").innerHTML = cats
+        .map(
+          ([n, c, g]) =>
+            `<a class="cat" href="#" style="background:linear-gradient(135deg,${g})"><b>${n}</b><em>${c} games</em></a>`,
+        )
+        .join("");
+      const games = [
+        ["Lagos Legends", "Triple", "L", "#fbbf24,#dc2626"],
+        ["Bingo", "Hamzat", "B", "#26261f,#3f6212"],
+        ["Quiz", "Hamzat", "?", "#26261f,#0e7490"],
+        ["Ludo", "Hamzat", "&#9858;", "#26261f,#be123c"],
+        ["Whot", "Hamzat", "W", "#26261f,#6d28d9"],
+      ];
+      document.getElementById("games").innerHTML = games
+        .map(
+          ([n, a, l, g]) =>
+            `<a class="game" href="#"><div class="thumb" style="background:linear-gradient(135deg,${g})">${l}</div><b>${n}</b><span>by ${a}</span></a>`,
+        )
+        .join("");
+
+      // keys
+      const keysG = document.getElementById("keys");
+      [
+        [70, 172, 8],
+        [70, 190, 8],
+        [84, 208, 9],
+      ].forEach(() => {});
+      for (let r = 0; r < 3; r++) {
+        const n = 7 - (r === 2 ? 1 : 0);
+        for (let i = 0; i < n; i++) {
+          const c = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "circle",
+          );
+          c.setAttribute("cx", 72 + i * (r === 2 ? 17 : 16) + r * 6);
+          c.setAttribute("cy", 172 + r * 18);
+          c.setAttribute("r", 6);
+          c.classList.add("key");
+          keysG.appendChild(c);
+        }
+      }
+      const keyEls = [...document.querySelectorAll(".key")];
+
+      // theme + top button
+      const root = document.documentElement;
+      document.getElementById("theme").onclick = () => {
+        const dark =
+          getComputedStyle(root).getPropertyValue("--bg").trim() === "#17170f";
+        root.dataset.theme = dark ? "light" : "dark";
+      };
+      document.getElementById("top").onclick = () =>
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // ---------- animation ----------
+      const txt = document.getElementById("txt"),
+        caret = document.getElementById("caret");
+      const hand = document.getElementById("hand"),
+        paper = document.getElementById("paper");
+      const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let text = "";
+      const render = () => {
+        txt.textContent = text;
+      };
+
+      function keystroke() {
+        gsap.fromTo(
+          hand,
+          { y: 0 },
+          {
+            y: 7,
+            duration: 0.05,
+            yoyo: true,
+            repeat: 1,
+            ease: "power1.out",
+            overwrite: true,
+          },
+        );
+        const k = keyEls[Math.floor(Math.random() * keyEls.length)];
+        gsap.fromTo(
+          k,
+          { y: 0 },
+          {
+            y: 3,
+            duration: 0.04,
+            yoyo: true,
+            repeat: 1,
+            transformOrigin: "50% 50%",
+          },
+        );
+      }
+      async function typeStr(s, speed = 85) {
+        for (const ch of s) {
+          text += ch;
+          render();
+          keystroke();
+          await sleep(speed + Math.random() * 50);
+        }
+      }
+      async function backspace(n, speed = 70) {
+        for (let i = 0; i < n && text.length; i++) {
+          text = text.slice(0, -1);
+          render();
+          keystroke();
+          await sleep(speed + Math.random() * 30);
+        }
+      }
+
+      // each step is an item in the script; the loop awaits each one in order
+      const script = [
+        () => typeStr("Good vibes. Good games."),
+        () => sleep(900),
+        () => backspace(6), // "Good vibes. Good "
+        () => sleep(350),
+        () => typeStr("Great games."),
+        () => sleep(900),
+        () => backspace(18, 55), // back to "Good vibes."
+        () => sleep(450),
+        () => typeStr(" Good games. Now with extra Jollof!", 80),
+      ];
+
+      function finish() {
+        caret.style.display = "none";
+        txt.innerHTML =
+          "Good vibes. <mark>Good games.</mark><small>Now with extra Jollof!</small>";
+        gsap.set(".reveal", { visibility: "visible" });
+        gsap.fromTo(
+          ".reveal",
+          { opacity: 0, y: 16 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.18,
+            ease: "power2.out",
+          },
+        );
+      }
+
+      async function finale() {
+        await sleep(250);
+        // slam the last key
+        await gsap
+          .to(hand, { y: 16, duration: 0.12, ease: "power2.in" })
+          .then();
+        // paper shoots up and right, spinning
+        gsap.to(paper, {
+          x: 260,
+          y: -300,
+          rotation: 640,
+          opacity: 0,
+          duration: 1.1,
+          ease: "power2.out",
+          svgOrigin: "125 100",
+        });
+        await sleep(300);
+        finish();
+        // hand lifts and waves goodbye, side to side (pivoting at the wrist)
+        const wave = gsap.timeline();
+        wave
+          .to(hand, { y: -26, duration: 0.35, ease: "back.out(2)" })
+          .to(hand, {
+            rotation: -24,
+            duration: 0.18,
+            ease: "sine.inOut",
+            svgOrigin: "122 275",
+          })
+          .to(hand, {
+            rotation: 24,
+            duration: 0.3,
+            yoyo: true,
+            repeat: 5,
+            ease: "sine.inOut",
+            svgOrigin: "122 275",
+          })
+          .to(hand, { rotation: 0, duration: 0.15, svgOrigin: "122 275" })
+          .to(
+            hand,
+            {
+              x: 280,
+              y: -150,
+              rotation: 40,
+              opacity: 0,
+              duration: 0.7,
+              ease: "power2.in",
+              svgOrigin: "125 170",
+            },
+            "+=.1",
+          );
+        await wave.then();
+      }
+
+      async function run() {
+        if (reduce) {
+          text = "Good vibes. Good games. Now with extra Jollof!";
+          render();
+          gsap.set([hand, paper], { opacity: 0 });
+          finish();
+          return;
+        }
+        gsap.set(paper, { y: 0 });
+        gsap.to(paper, {
+          y: -8,
+          duration: 0.6,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        }); // gentle idle sway
+        await sleep(500);
+        try {
+          for (const step of script) {
+            await step();
+          } // never stalls: every step returns a promise
+        } catch (e) {
+          console.error(e);
+          text = "Good vibes. Good games. Now with extra Jollof!";
+        }
+        gsap.killTweensOf(paper);
+        gsap.set(paper, { y: 0 });
+        await finale();
+      }
+      run();
+    </script>
+  </body>
+</html>
