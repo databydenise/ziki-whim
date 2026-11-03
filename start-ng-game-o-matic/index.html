@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Browse games by category | Start.ng</title>
+  <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/game-o-matic.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="site-header">
+    <a class="logo" href="#"><span class="logo-mark" aria-hidden="true"></span>start<span>.ng</span></a>
+    <nav class="site-nav" aria-label="Main"><a href="#">Games</a><a href="#">Tournament</a><a href="#">Creators</a><a href="#">Docs</a></nav>
+  </header>
+
+  <main>
+    <p class="crumbs">Games › Categories</p>
+    <h1>Browse games by category</h1>
+    <p class="lede">Pick how you want to play, or the mood you are in. One game can be in more than one category.</p>
+
+    <section aria-label="Categories">
+      <!-- Game-o-Matic 3000: first thing in the section, top-left -->
+      <div class="browse-top">
+        <div class="gom" data-gom>
+          <div class="gom-stage" data-stage>
+            <div class="machine" data-machine>
+              <span class="screw s1"></span><span class="screw s2"></span><span class="screw s3"></span><span class="screw s4"></span>
+
+              <div class="marquee"><h2>GAME-O-MATIC 3000</h2></div>
+
+              <div class="bezel">
+                <div class="screen">
+                  <p class="scr-title" data-title></p>
+                  <p class="scr-sub" data-sub></p>
+                  <p class="scr-hint" data-hint></p>
+                  <div class="scr-actions" data-actions></div>
+                  <button class="screen-start" type="button" data-start aria-label="Pick a mood. Tap the screen to begin."></button>
+                </div>
+                <div class="picker" data-picker role="dialog" aria-label="Choose a mood" inert>
+                  <div class="picker-head">
+                    <span>PICK A MOOD</span>
+                    <button class="picker-close" type="button" data-close aria-label="Close mood picker">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+                    </button>
+                  </div>
+                  <div class="picker-grid" data-grid></div>
+                </div>
+              </div>
+
+              <div class="controls" aria-hidden="true">
+                <div class="leds" data-leds><span class="led"></span><span class="led"></span><span class="led"></span></div>
+                <div class="vents"></div>
+                <div class="knob"></div>
+              </div>
+
+              <div class="dispenser">
+                <span class="slot" aria-hidden="true"></span>
+                <div class="ticket-clip" data-clip>
+                  <article class="ticket" data-ticket aria-label="Your game ticket">
+                    <div class="ticket-paper">
+                      <div class="t-head">
+                        <span>ADMIT ONE</span>
+                        <button class="t-close" type="button" data-t-close aria-label="Close ticket">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+                        </button>
+                      </div>
+                      <div class="t-thumb" data-t-thumb aria-hidden="true"></div>
+                      <h3 class="t-title" data-t-title></h3>
+                      <p class="t-desc" data-t-desc></p>
+                      <span class="t-mood" data-t-mood></span>
+                      <div class="ticket-foot">
+                        <!-- Demo only: intentionally does nothing -->
+                        <button class="t-play" type="button">PLAY NOW</button>
+                        <div class="t-code"><div class="barcode" aria-hidden="true"></div><span data-t-id></span></div>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+
+              <span class="foot f1"></span><span class="foot f2"></span>
+
+              <div class="lever-mount">
+                <span class="bracket" aria-hidden="true"></span>
+                <button class="lever" type="button" data-lever aria-disabled="true" aria-label="Pull the lever">
+                  <span class="arm"></span><span class="ball"></span>
+                </button>
+                <span class="pivot" aria-hidden="true"></span>
+                <div class="bubble" data-bubble hidden></div>
+              </div>
+            </div>
+          </div>
+          <p class="sr-only" role="status" aria-live="polite" data-live></p>
+        </div>
+
+        <!-- "How you play" sits beside the machine on desktop -->
+        <div class="browse-side" id="category-side"></div>
+      </div>
+
+      <!-- Existing category browsing (unchanged) -->
+      <div id="category-groups"></div>
+    </section>
+  </main>
+</div>
+
+<script src="js/games-data.js"></script>
+<script src="js/categories.js"></script>
+<script src="js/game-o-matic.js"></script>
+</body>
+</html>
